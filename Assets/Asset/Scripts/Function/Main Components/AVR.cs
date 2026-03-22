@@ -5,6 +5,7 @@ public class AVR : MonoBehaviour
 {
     public SystemUnit systemUnit;
     public Motherboard motherboard;
+    public VGACable vgaCable;   // ✅ Add VGA reference
 
     private InputAction mouseClickAction;
 
@@ -22,7 +23,6 @@ public class AVR : MonoBehaviour
 
     private void HandleClick()
     {
-
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
         worldPos.z = 0f;
@@ -70,7 +70,33 @@ public class AVR : MonoBehaviour
                     }
                 }
 
-                // ✅ If we reach here, all slots are correct
+                // ✅ VGA cable check
+                if (vgaCable == null)
+                {
+                    Debug.LogError("VGA cable reference not assigned!");
+                    return;
+                }
+
+                bool vgaSystemUnit = vgaCable.IsConnectedToSystemUnit();
+                bool vgaMonitor = vgaCable.IsConnectedToMonitor();
+
+                if (!vgaSystemUnit && !vgaMonitor)
+                {
+                    TroubleshootManager.Instance.ShowMessage("Cannot turn on, VGA cable is not yet connected.", true);
+                    return;
+                }
+                else if (vgaSystemUnit && !vgaMonitor)
+                {
+                    TroubleshootManager.Instance.ShowMessage("Cannot turn on, VGA cable is not yet connected to the Monitor.", true);
+                    return;
+                }
+                else if (!vgaSystemUnit && vgaMonitor)
+                {
+                    TroubleshootManager.Instance.ShowMessage("Cannot turn on, VGA cable is not yet connected to the System Unit.", true);
+                    return;
+                }
+
+                // ✅ If we reach here, all slots are correct and VGA is fully connected
                 TroubleshootManager.Instance.ShowMessage("Hardware Assembly Complete.", false);
             }
         }

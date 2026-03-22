@@ -4,11 +4,11 @@ using UnityEngine.InputSystem;
 public class VGACable : MonoBehaviour
 {
     [Header("Assign in Inspector")]
-    public Collider2D workbenchArea;     // Workbench collider
-    public Collider2D itemArea;          // Item area collider
+    public Collider2D workbenchArea;
+    public Collider2D itemArea;
 
     private Collider2D col;
-    private Vector3 originalEditorPosition;   // stored at Awake
+    private Vector3 originalEditorPosition;
     private Vector3 startDragPosition;
     private bool isDragging = false;
 
@@ -31,7 +31,6 @@ public class VGACable : MonoBehaviour
         mouseClickAction.Enable();
         mousePositionAction.Enable();
 
-        // ✅ Save the original editor position once
         originalEditorPosition = transform.position;
     }
 
@@ -81,7 +80,6 @@ public class VGACable : MonoBehaviour
             HoverLabelManager.Instance.HideLabel();
         }
 
-        // Check overlap with SystemUnit or Monitor
         Collider2D[] colliders = Physics2D.OverlapAreaAll(col.bounds.min, col.bounds.max);
 
         foreach (Collider2D collider in colliders)
@@ -94,54 +92,42 @@ public class VGACable : MonoBehaviour
                     !connectedToSystemUnit
                 );
 
-                transform.position = collider.transform.position;
-                transform.SetParent(collider.transform);
+                ReturnToOriginal();
                 return;
             }
 
             if (collider.CompareTag("Monitor"))
             {
-                if (!connectedToSystemUnit)
-                {
-                    TroubleshootManager.Instance.ShowMessage("Cannot connect VGA to Monitor before System Unit.", true);
-                    ReturnToOriginal();
-                    return;
-                }
-
+                // ✅ No longer requires System Unit first
                 connectedToMonitor = !connectedToMonitor;
                 TroubleshootManager.Instance.ShowMessage(
                     connectedToMonitor ? "VGA connected to Monitor." : "VGA disconnected from Monitor.",
                     !connectedToMonitor
                 );
 
-                transform.position = collider.transform.position;
-                transform.SetParent(collider.transform);
+                ReturnToOriginal();
                 return;
             }
         }
 
-        // ✅ If dropped inside item area → return to original editor position
-        if (itemArea != null && itemArea.bounds.Contains(transform.position))
-        {
-            ReturnToOriginal();
-            return;
-        }
-
-        // ✅ If dropped outside workbench area → return to original editor position
-        if (workbenchArea != null && !workbenchArea.bounds.Contains(transform.position))
-        {
-            ReturnToOriginal();
-            return;
-        }
-
-        // Default fallback
         ReturnToOriginal();
     }
+
+    public bool IsConnectedToSystemUnit()
+    {
+        return connectedToSystemUnit;
+    }
+
+    public bool IsConnectedToMonitor()
+    {
+        return connectedToMonitor;
+    }
+
 
     private void ReturnToOriginal()
     {
         transform.position = originalEditorPosition;
-        transform.SetParent(null); // detach so it doesn't get stuck under wrong parent
+        transform.SetParent(null);
     }
 
     void Update()

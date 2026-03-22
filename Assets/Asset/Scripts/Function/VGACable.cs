@@ -1,0 +1,173 @@
+﻿using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class VGACable : MonoBehaviour
+{
+    [Header("Assign in Inspector")]
+    public Collider2D workbenchArea;     // Workbench collider
+    public Collider2D itemArea;          // Item area collider
+
+    private Collider2D col;
+    private Vector3 originalEditorPosition;   // stored at Awake
+    private Vector3 startDragPosition;
+    private bool isDragging = false;
+
+    private InputAction mouseClickAction;
+    private InputAction mousePositionAction;
+
+    private bool connectedToSystemUnit = false;
+    private bool connectedToMonitor = false;
+
+    private void Awake()
+    {
+        col = GetComponent<Collider2D>();
+
+        mouseClickAction = new InputAction("MouseClick", binding: "<Mouse>/leftButton");
+        mousePositionAction = new InputAction("MousePosition", binding: "<Mouse>/position");
+
+        mouseClickAction.performed += context => OnMouseClickPerformed();
+        mouseClickAction.canceled += context => StopDrag();
+
+        mouseClickAction.Enable();
+        mousePositionAction.Enable();
+
+        // ✅ Save the original editor position once
+        originalEditorPosition = transform.position;
+    }
+
+    private void OnDestroy()
+    {
+        mouseClickAction.Disable();
+        mousePositionAction.Disable();
+    }
+
+    private void OnMouseClickPerformed()
+    {
+        AttemptStartDrag();
+    }
+
+    private void AttemptStartDrag()
+    {
+        if (isDragging) return;
+
+        Vector2 mousePos = mousePositionAction.ReadValue<Vector2>();
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        worldPos.z = transform.position.z;
+
+        RaycastHit2D[] hits = Physics2D.RaycastAll(worldPos, Vector2.zero);
+
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.collider == col)
+            {
+                isDragging = true;
+                startDragPosition = transform.position;
+
+                if (HoverLabelManager.Instance != null)
+                {
+                    HoverLabelManager.Instance.ShowLabel(gameObject.name.Replace("(Clone)", ""));
+                }
+                break;
+            }
+        }
+    }
+
+    private void StopDrag()
+    {
+        isDragging = false;
+
+        if (HoverLabelManager.Instance != null)
+        {
+            HoverLabelManager.Instance.HideLabel();
+        }
+
+        // Check overlap with SystemUnit or Monitor
+        Collider2D[] colliders = Physics2D.OverlapAreaAll(col.bounds.min, col.bounds.max);
+
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.CompareTag("SystemUnit"))
+            {
+                connectedToSystemUnit = !connectedToSystemUnit;
+                TroubleshootManager.Instance.ShowMessage(
+                    connectedToSystemUnit ? "VGA connected to System Unit." : "VGA disconnected from System Unit.",
+                    !connectedToSystemUnit
+                );
+
+                transform.position = collider.transform.position;
+                transform.SetParent(collider.transform);
+                return;
+            }
+
+            if (collider.CompareTag("Monitor"))
+            {
+                if (!connectedToSystemUnit)
+                {
+                    TroubleshootManager.Instance.ShowMessage("Cannot connect VGA to Monitor before System Unit.", true);
+                    ReturnToOriginal();
+                    return;
+                }
+
+                connectedToMonitor = !connectedToMonitor;
+                TroubleshootManager.Instance.ShowMessage(
+                    connectedToMonitor ? "VGA connected to Monitor." : "VGA disconnected from Monitor.",
+                    !connectedToMonitor
+                );
+
+                transform.position = collider.transform.position;
+                transform.SetParent(collider.transform);
+                return;
+            }
+        }
+
+        // ✅ If dropped inside item area → return to original editor position
+        if (itemArea != null && itemArea.bounds.Contains(transform.position))
+        {
+            ReturnToOriginal();
+            return;
+        }
+
+        // ✅ If dropped outside workbench area → return to original editor position
+        if (workbenchArea != null && !workbenchArea.bounds.Contains(transform.position))
+        {
+            ReturnToOriginal();
+            return;
+        }
+
+        // Default fallback
+        ReturnToOriginal();
+    }
+
+    private void ReturnToOriginal()
+    {
+        transform.position = originalEditorPosition;
+        transform.SetParent(null); // detach so it doesn't get stuck under wrong parent
+    }
+
+    void Update()
+    {
+        if (isDragging)
+        {
+            transform.position = GetMousePositionInWorldSpace();
+
+            Vector2 mousePos = mousePositionAction.ReadValue<Vector2>();
+            if (HoverLabelManager.Instance != null)
+            {
+                HoverLabelManager.Instance.FollowMouse(mousePos);
+            }
+        }
+    }
+
+    private Vector3 GetMousePositionInWorldSpace()
+    {
+        Vector2 mousePos = mousePositionAction.ReadValue<Vector2>();
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        worldPos.z = 0f;
+        return worldPos;
+    }
+
+    public bool IsFullyConnected()
+    {
+        return connectedToSystemUnit && connectedToMonitor;
+    }
+}

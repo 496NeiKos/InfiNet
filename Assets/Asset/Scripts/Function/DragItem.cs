@@ -167,22 +167,36 @@ public class DragItem : MonoBehaviour
         }
         else
         {
-            if (itemArea != null && itemArea.bounds.Contains(transform.position))
+            // ✅ NEW: check for DescSlot collision
+            DescSlot descSlot = FindDescSlotCollision();
+            if (descSlot != null)
             {
-                if (initialItemPositions.ContainsKey(this))
-                {
-                    transform.position = initialItemPositions[this];
-                    transform.SetParent(itemArea.transform);
-                }
-                else
-                {
-                    transform.position = CalculateNearestGridPosition(transform.position);
-                    transform.SetParent(itemArea.transform);
-                }
+                Debug.Log($"StopDrag: Colliding with DescSlot {descSlot.name}");
+
+                transform.position = descSlot.transform.position;
+                transform.SetParent(descSlot.transform);
+
+                descSlot.SetCurrentItem(this);
             }
-            else if (workbenchArea != null && !workbenchArea.bounds.Contains(transform.position))
+            else
             {
-                transform.position = startDragPosition;
+                if (itemArea != null && itemArea.bounds.Contains(transform.position))
+                {
+                    if (initialItemPositions.ContainsKey(this))
+                    {
+                        transform.position = initialItemPositions[this];
+                        transform.SetParent(itemArea.transform);
+                    }
+                    else
+                    {
+                        transform.position = CalculateNearestGridPosition(transform.position);
+                        transform.SetParent(itemArea.transform);
+                    }
+                }
+                else if (workbenchArea != null && !workbenchArea.bounds.Contains(transform.position))
+                {
+                    transform.position = startDragPosition;
+                }
             }
         }
 
@@ -198,6 +212,21 @@ public class DragItem : MonoBehaviour
             if (itemSlot != null && itemSlot.currentItem == null)
             {
                 return itemSlot;
+            }
+        }
+        return null;
+    }
+
+    // ✅ NEW: Find DescSlot collision
+    private DescSlot FindDescSlotCollision()
+    {
+        Collider2D[] colliders = Physics2D.OverlapAreaAll(col.bounds.min, col.bounds.max);
+        foreach (Collider2D collider in colliders)
+        {
+            DescSlot descSlot = collider.GetComponent<DescSlot>();
+            if (descSlot != null && descSlot.currentItem == null)
+            {
+                return descSlot;
             }
         }
         return null;

@@ -7,7 +7,6 @@ TagManager:
   - 'requiredTag '
   - Monitor
   - SystemUnit
-  - DescSlot
   layers:
   - Default
   - TransparentFX

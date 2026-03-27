@@ -547,6 +547,7 @@ GameObject:
   - component: {fileID: 246539492}
   - component: {fileID: 246539491}
   - component: {fileID: 246539490}
+  - component: {fileID: 246539493}
   m_Layer: 7
   m_Name: CMOS
   m_TagString: Untagged
@@ -689,6 +690,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &246539493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 246539488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cf639cf9724b7b4b957a28c38ae23be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ComponentItem
+  type: 8
 --- !u!1 &293965613
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,7 +770,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 4504214644046876016, guid: 5180675cec4ea044686bc3c619a8a287, type: 3}
+  m_Sprite: {fileID: -1428842927867859598, guid: 51641c21f0a91994c97aa00380e2368c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -775,8 +789,8 @@ Transform:
   m_GameObject: {fileID: 293965613}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -373.49908, y: -216.53488, z: 0}
-  m_LocalScale: {x: 5.537591, y: 5.8378844, z: 1}
+  m_LocalPosition: {x: -373.49948, y: -216.534, z: 0}
+  m_LocalScale: {x: 5.421797, y: 6.3108187, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1490472055}
@@ -815,17 +829,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.00008225441, y: 0.000026255846}
+  m_Offset: {x: 0.000107586384, y: -0.000086188316}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.4, y: 1.35}
+    oldSize: {x: 2.4528573, y: 1.25}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.4001608, y: 1.3500497}
+  m_Size: {x: 2.4511452, y: 1.2488971}
   m_EdgeRadius: 0
 --- !u!1 &429710485
 GameObject:
@@ -896,7 +910,7 @@ SpriteRenderer:
   m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.86415094, g: 0.86415094, b: 0.86415094, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.91764706}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -913,12 +927,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 429710485}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.51, y: 4.14, z: 0}
-  m_LocalScale: {x: 1.27, y: 1.27, z: 1.27}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -378.08286, y: -213.86432, z: 0}
+  m_LocalScale: {x: 0.81, y: 0.81, z: 0.81}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1490472055}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &429710488
 MonoBehaviour:
@@ -933,6 +947,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DescSlot
   currentItem: {fileID: 0}
+  terminalText: {fileID: 630783162}
 --- !u!61 &429710489
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1247,7 +1262,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -6235597927482700783, guid: 2644c35840b6aad49a7d49a9dccebb71, type: 3}
+  m_Sprite: {fileID: -3509744016396952904, guid: 0d002fa15b2107a45ba222051c44e0f9, type: 3}
   m_Color: {r: 0.89433956, g: 0.89433956, b: 0.89433956, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1528,8 +1543,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 250, y: -460}
-  m_SizeDelta: {x: 1400, y: 200}
+  m_AnchoredPosition: {x: 370, y: -450}
+  m_SizeDelta: {x: 1100, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &630783161
 MonoBehaviour:
@@ -1933,6 +1948,7 @@ GameObject:
   - component: {fileID: 731053833}
   - component: {fileID: 731053832}
   - component: {fileID: 731053831}
+  - component: {fileID: 731053835}
   m_Layer: 7
   m_Name: RAM
   m_TagString: Untagged
@@ -2075,6 +2091,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1567077769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &731053835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731053830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cf639cf9724b7b4b957a28c38ae23be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ComponentItem
+  type: 1
 --- !u!1 &822446276
 GameObject:
   m_ObjectHideFlags: 0
@@ -2457,6 +2486,7 @@ GameObject:
   - component: {fileID: 1097716586}
   - component: {fileID: 1097716585}
   - component: {fileID: 1097716584}
+  - component: {fileID: 1097716587}
   m_Layer: 7
   m_Name: Heatsink
   m_TagString: Untagged
@@ -2599,6 +2629,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1097716587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097716582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cf639cf9724b7b4b957a28c38ae23be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ComponentItem
+  type: 9
 --- !u!1 &1147038891
 GameObject:
   m_ObjectHideFlags: 0
@@ -2655,7 +2698,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.3625, y: 0.825}
+    oldSize: {x: 4.725801, y: 1.0975}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -2712,7 +2755,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -8892085342697229581, guid: fe151746fef96184f946e204dda36282, type: 3}
+  m_Sprite: {fileID: -279384441923056290, guid: ad76f1582c1d3db4aaf6118cf42684aa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2731,8 +2774,8 @@ Transform:
   m_GameObject: {fileID: 1147038891}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -373.50195, y: -221.53624, z: 0}
-  m_LocalScale: {x: 5.6377025, y: 2.5889778, z: 1}
+  m_LocalPosition: {x: -373.5001, y: -221.5349, z: 0}
+  m_LocalScale: {x: 2.8117793, y: 1.9318883, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1490472055}
@@ -3188,6 +3231,7 @@ GameObject:
   - component: {fileID: 1351072268}
   - component: {fileID: 1351072267}
   - component: {fileID: 1351072266}
+  - component: {fileID: 1351072269}
   m_Layer: 7
   m_Name: Cooling System
   m_TagString: Untagged
@@ -3330,6 +3374,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1351072269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351072264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cf639cf9724b7b4b957a28c38ae23be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ComponentItem
+  type: 6
 --- !u!1 &1431177917
 GameObject:
   m_ObjectHideFlags: 0
@@ -3530,6 +3587,7 @@ Transform:
   - {fileID: 293965615}
   - {fileID: 461985580}
   - {fileID: 1147038894}
+  - {fileID: 429710487}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1521826823
@@ -3709,6 +3767,7 @@ GameObject:
   - component: {fileID: 1553863407}
   - component: {fileID: 1553863406}
   - component: {fileID: 1553863405}
+  - component: {fileID: 1553863408}
   m_Layer: 7
   m_Name: HDD
   m_TagString: Untagged
@@ -3851,6 +3910,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1553863408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553863403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cf639cf9724b7b4b957a28c38ae23be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ComponentItem
+  type: 2
 --- !u!1 &1567077768
 GameObject:
   m_ObjectHideFlags: 0
@@ -3936,6 +4008,7 @@ GameObject:
   - component: {fileID: 1693723203}
   - component: {fileID: 1693723202}
   - component: {fileID: 1693723201}
+  - component: {fileID: 1693723204}
   m_Layer: 7
   m_Name: CD-ROM
   m_TagString: Untagged
@@ -4078,6 +4151,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1693723204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693723199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cf639cf9724b7b4b957a28c38ae23be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ComponentItem
+  type: 10
 --- !u!1 &1721542826
 GameObject:
   m_ObjectHideFlags: 0
@@ -4090,6 +4176,7 @@ GameObject:
   - component: {fileID: 1721542830}
   - component: {fileID: 1721542829}
   - component: {fileID: 1721542828}
+  - component: {fileID: 1721542831}
   m_Layer: 7
   m_Name: BIOS
   m_TagString: Untagged
@@ -4232,6 +4319,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1721542831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721542826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cf639cf9724b7b4b957a28c38ae23be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ComponentItem
+  type: 7
 --- !u!1 &1722540522
 GameObject:
   m_ObjectHideFlags: 0
@@ -5280,7 +5380,6 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 1789379470}
-  - {fileID: 185201595}
   - {fileID: 1567077769}
   - {fileID: 1490472055}
-  - {fileID: 429710487}
+  - {fileID: 185201595}

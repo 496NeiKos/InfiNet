@@ -22,6 +22,12 @@ public class DragItem : MonoBehaviour
     private static Dictionary<DragItem, Vector3> initialItemPositions = new Dictionary<DragItem, Vector3>();
     private static bool initialPositionsCalculated = false;
 
+    [Header("Sprites")]
+    public Sprite defaultSprite;   // side view
+    public Sprite slotSprite;      // top view
+    private SpriteRenderer spriteRenderer;
+
+
     private void Awake()
     {
         col = GetComponent<Collider2D>();
@@ -42,6 +48,13 @@ public class DragItem : MonoBehaviour
             CalculateInitialItemPositions();
             initialPositionsCalculated = true;
         }
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (defaultSprite == null && spriteRenderer != null)
+        {
+            defaultSprite = spriteRenderer.sprite; // fallback
+        }
+
     }
 
     private void OnDestroy()
@@ -74,7 +87,6 @@ public class DragItem : MonoBehaviour
                 startDragPosition = transform.position;
                 currentlyDraggedItem = this;
 
-                // ✅ Show label when drag starts
                 if (HoverLabelManager.Instance != null)
                 {
                     HoverLabelManager.Instance.ShowLabel(gameObject.name.Replace("(Clone)", ""));
@@ -97,11 +109,15 @@ public class DragItem : MonoBehaviour
                     {
                         transform.SetParent(null);
                     }
+
+                    // ✅ Revert sprite when ejected
+                    SetToDefaultSprite();
                 }
                 break;
             }
         }
     }
+
 
     private bool IsCorrectSlot(ItemSlot slot)
     {
@@ -115,7 +131,6 @@ public class DragItem : MonoBehaviour
     {
         isDragging = false;
 
-        // ✅ Hide label when drag stops
         if (HoverLabelManager.Instance != null)
         {
             HoverLabelManager.Instance.HideLabel();
@@ -126,6 +141,23 @@ public class DragItem : MonoBehaviour
         if (itemSlot != null)
         {
             Debug.Log($"StopDrag: Colliding with ItemSlot {itemSlot.name}");
+
+            // ✅ AVR check: block motherboard removal if AVR is ON
+            AVR avr = FindObjectOfType<AVR>();
+            if (avr != null && avr.IsOn() &&
+                string.Equals(itemSlot.expectedItemName.Trim(), "Motherboard", System.StringComparison.OrdinalIgnoreCase))
+            {
+                TroubleshootManager.Instance.ShowMessage(
+                    "Cannot remove Motherboard while AVR is turned ON. Please turn off AVR first.",
+                    true
+                );
+
+                // Snap back to slot immediately
+                transform.position = itemSlot.transform.position;
+                transform.SetParent(itemSlot.transform);
+                currentlyDraggedItem = null;
+                return;
+            }
 
             SystemUnit systemUnit = FindObjectOfType<SystemUnit>();
             if (systemUnit != null && systemUnit.IsMotherboardInstalled())
@@ -164,10 +196,12 @@ public class DragItem : MonoBehaviour
 
             currentSlot = itemSlot;
             itemSlot.SetCurrentItem(this);
+
+            // ✅ Change sprite when snapped into slot
+            SetToSlotSprite();
         }
         else
         {
-            // ✅ NEW: check for DescSlot collision
             DescSlot descSlot = FindDescSlotCollision();
             if (descSlot != null)
             {
@@ -192,6 +226,9 @@ public class DragItem : MonoBehaviour
                         transform.position = CalculateNearestGridPosition(transform.position);
                         transform.SetParent(itemArea.transform);
                     }
+
+                    // ✅ Revert sprite when dropped back to itemArea
+                    SetToDefaultSprite();
                 }
                 else if (workbenchArea != null && !workbenchArea.bounds.Contains(transform.position))
                 {
@@ -202,6 +239,10 @@ public class DragItem : MonoBehaviour
 
         currentlyDraggedItem = null;
     }
+
+
+
+
 
     private ItemSlot FindItemSlotCollision()
     {
@@ -216,6 +257,25 @@ public class DragItem : MonoBehaviour
         }
         return null;
     }
+
+    public void SetToSlotSprite()
+    {
+        if (slotSprite != null && spriteRenderer != null)
+        {
+            spriteRenderer.sprite = slotSprite;
+            Debug.Log($"{name}: Sprite changed to slot view.");
+        }
+    }
+
+    public void SetToDefaultSprite()
+    {
+        if (defaultSprite != null && spriteRenderer != null)
+        {
+            spriteRenderer.sprite = defaultSprite;
+            Debug.Log($"{name}: Sprite reverted to default view.");
+        }
+    }
+
 
     // ✅ NEW: Find DescSlot collision
     private DescSlot FindDescSlotCollision()

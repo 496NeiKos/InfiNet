@@ -27,12 +27,18 @@ public class ItemSlot : MonoBehaviour
                 // Snap back to item area instead of staying in slot
                 item.transform.SetParent(item.itemArea.transform);
                 item.transform.position = item.itemArea.transform.position;
+
+                // ✅ Revert sprite since install failed
+                item.SetToDefaultSprite();
                 return;
             }
         }
 
         currentItem = item;
         Debug.Log($"ItemSlot {name}: Set current item to {item.name}");
+
+        // ✅ Change sprite when item is successfully installed
+        currentItem.SetToSlotSprite();
     }
 
     public void ClearSlot()
@@ -45,7 +51,24 @@ public class ItemSlot : MonoBehaviour
                 true
             );
 
-            // Snap back to slot
+            if (currentItem != null)
+            {
+                currentItem.transform.position = transform.position;
+                currentItem.transform.SetParent(transform);
+            }
+            return;
+        }
+
+        // ✅ Block motherboard removal if AVR is ON
+        AVR avr = FindObjectOfType<AVR>();
+        if (avr != null && avr.IsOn() &&
+            string.Equals(expectedItemName.Trim(), "Motherboard", System.StringComparison.OrdinalIgnoreCase))
+        {
+            TroubleshootManager.Instance.ShowMessage(
+                "Cannot remove Motherboard while AVR is turned ON. Please turn off AVR first.",
+                true
+            );
+
             if (currentItem != null)
             {
                 currentItem.transform.position = transform.position;
@@ -55,8 +78,17 @@ public class ItemSlot : MonoBehaviour
         }
 
         Debug.Log($"ItemSlot {name}: Cleared slot");
+
+        if (currentItem != null)
+        {
+            currentItem.SetToDefaultSprite();
+        }
+
         currentItem = null;
     }
+
+
+
 
     private bool HasDependentItem()
     {
